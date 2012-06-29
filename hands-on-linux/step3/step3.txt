@@ -1,0 +1,68 @@
+# start 4 mongod processes
+sh mongod01a_start.sh        # port = 27101
+sh mongod01b_start.sh        # port = 27102
+sh mongod01c_start.sh        # port = 27103
+sh mongod02_start.sh         # port = 27201
+
+
+# connect to mongod 01a
+${MONGODB_HOME}/bin/mongo --port 27101
+
+
+# run following commands to initiate ReplicaSet
+config = {
+    _id: 'r1', members: [
+        {_id: 0, host: 'localhost:27101'},
+        {_id: 1, host: 'localhost:27102'},
+        {_id: 2, host: 'localhost:27103'}
+    ]
+}
+rs.initiate(config)
+rs.status()
+
+
+# start mongoc process
+sh mongoc_start.sh        # port = 27001
+
+
+# start mongos process
+sh mongos_start.sh        # port = 27017
+
+
+# connect to mongos
+${MONGODB_HOME}/bin/mongo
+
+
+# run following commands to initiate Shards
+use admin
+db.runCommand({addshard:"r1/localhost:27101,localhost:27102,localhost:27103"})
+db.runCommand({addshard:"localhost:27201"})
+db.printShardingStatus()
+
+
+# run following commands to enable "step3" dbs sharding
+db.runCommand({enablesharding:"step3"});
+db.printShardingStatus()
+
+
+# run following commands to shard "user" collection
+db.runCommand({shardcollection:"step3.user",  key:{name: 1}, unique:true});
+db.printShardingStatus()
+
+
+# insert test data
+# check chunks are created and migrated to each shards
+use step3
+for(i = 1; i < 100000; i++){
+    db.user.save({name:"hoge"+i, age:20, comment:"sample data."});
+}
+db.printShardingStatus()
+
+
+# keywords related to Sharding
+#   - mongoc
+#   - mongos
+#   - shard key
+#   - chunk
+#   - migration
+
