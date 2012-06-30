@@ -1,0 +1,50 @@
+# create data directory
+mkdir .\data\mongod
+
+
+# start mongod
+..\setEnv.bat
+%MONGODB_HOME%\bin\mongod.exe --dbpath .\data\mongod --smallfiles
+
+
+# connect to mongod
+..\setEnv.bat
+%MONGODB_HOME%\bin\mongo.exe
+
+# run commands
+show dbs
+use step1
+show collections
+db.user.save({name:"hoge"})
+db.help()
+db.user.help()
+db.user.find()
+db.user.count()
+db.user.remove()
+for(i=1;i<=100;i++) db.user.save({userId:i, name:"hoge"+i})
+db.user.find({userId:50})
+db.user.find({userId:50}, {name:1})
+db.user.find({userId: {$in: [1,2,3]}})
+db.user.find({userId: {$lte:10}})
+db.user.find({userId:{$gte:5, $lt:10}})
+
+
+# more query patterns
+http://www.mongodb.org/display/DOCS/Advanced+Queries
+
+
+# stop mongod (use one of the following 3 patterns)
+# 1. press "CTRL + C" if you are running mongod in foreground
+
+# 2. connect to mongod and run commands.
+%MONGODB_HOME%/bin/mongo.exe
+use admin
+db.shutdownServer()
+
+
+# keywords related to mongod basis
+#   - collection
+#   - document
+#   - index
+#   - MapReduce
+#   - journal
