@@ -1,4 +1,4 @@
 @echo off
 
-set MONGODB_HOME=C:\mongodb
+set MONGODB_HOME=
 
