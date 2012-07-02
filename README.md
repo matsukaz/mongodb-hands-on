@@ -1,4 +1,7 @@
 mongodb-hands-on
 ================
 
-MongoDB Hands-On notes
+DevLOVE MongoDB hands-on notes
+
+http://kokucheese.com/event/index/41873/
+
