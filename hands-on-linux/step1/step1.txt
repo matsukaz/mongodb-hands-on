@@ -40,6 +40,7 @@ db.user.find({userId:{$gte:5, $lt:10}})
 ## more query patterns
 ##
 http://www.mongodb.org/display/DOCS/Advanced+Queries
+http://docs.mongodb.org/manual/mongo/
 
 
 ##
