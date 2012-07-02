@@ -5,6 +5,7 @@ mongod01c_start.bat # port = 27103
 
 
 # connect to mongod 01a
+..\setEnv.bat
 %MONGODB_HOME%\bin\mongo.exe --port 27101
 
 
@@ -62,16 +63,18 @@ rs.status()
 
 
 # insert some data
+use step2
 db.user.save({name:"fuga"})
 db.user.find()
 
 
 # start mongod you have just stopped
-mongod_01a_start.bat
+mongod01a_start.bat	# port = 27101
 
 
 # connect to mongod you have just started and make sure that all datas are replicated.
 %MONGODB_HOME%\bin\mongo.exe --port [port]
+use step2
 rs.slaveOk()
 db.user.find()
 
