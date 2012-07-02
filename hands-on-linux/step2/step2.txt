@@ -1,14 +1,20 @@
-# start 3 mongod processes
+##
+## start 3 mongod processes
+##
 sh mongod01a_start.sh        # port = 27101
 sh mongod01b_start.sh        # port = 27102
 sh mongod01c_start.sh        # port = 27103
 
 
-# connect to mongod 01a
+##
+## connect to mongod 01a
+##
 ${MONGODB_HOME}/bin/mongo --port 27101
 
 
-# run following commands to initiate ReplicaSet
+##
+## run following commands to initiate ReplicaSet
+##
 config = {
     _id: 'r1', members: [
         {_id: 0, host: 'localhost:27101'},
@@ -20,8 +26,10 @@ rs.initiate(config)
 rs.status()
 
 
-# connect to mongod web console
-# url is "http://hostname:[mongod's port + 1000]"
+##
+## connect to mongod web console
+## url is "http://hostname:[mongod's port + 1000]"
+##
 # mongod 01a
 http://localhost:28101
 
@@ -32,66 +40,86 @@ http://localhost:28102
 http://localhost:28103
 
 
-# connect to PRIMARY mongod and insert data
+##
+## connect to PRIMARY mongod and insert data
+##
 ${MONGODB_HOME}/bin/mongo --port [port]
 use step2
 db.user.save({name:"hoge"})
 db.user.find()
 
 
-# connect to SECONDARY mongod and find data
+##
+## connect to SECONDARY mongod and find data
+##
 ${MONGODB_HOME}/bin/mongo --port [port]
 use step2
 rs.slaveOk()    # need to run commands in SECONDARY mongod
 db.user.find()
 
 
-# connect to PRIMARY mongod and run the following commands to become SECONDARY mongod
+##
+## connect to PRIMARY mongod and run the following commands to become SECONDARY mongod
+##
 ${MONGODB_HOME}/bin/mongo --port [port]
 rs.stepDown()
 rs.status()
 
 
-# stop PRIMARY mongod
+##
+## stop PRIMARY mongod
+##
 ps ax | grep mongo
 kill <PID>
 
 
-# make sure that new PRIMARY mongod was elected
+##
+## make sure that new PRIMARY mongod was elected
+##
 ${MONGODB_HOME}/bin/mongo --port [port]
 rs.status()
 
 
-# insert some data
+##
+## insert some data
+##
 db.user.save({name:"fuga"})
 db.user.find()
 
 
-# start mongod you have just stopped
+##
+## start mongod you have just stopped
+##
 sh mongod_01a_start.sh
 
 
-# connect to mongod you have just started and make sure that all datas are replicated.
+##
+## connect to mongod you have just started and make sure that all datas are replicated.
+##
 ${MONGODB_HOME}/bin/mongo --port [port]
 rs.slaveOk()
 db.user.find()
 
 
-# stop 2 mongod processes
+##
+## stop 2 mongod processes
+##
 ps ax | grep mongo
 kill [PID]
 
 
-# make sure that there are no PRIMARY mongod
-# ReplicaSet needs majority number of active mongod processes
+##
+## make sure that there are no PRIMARY mongod
+## ReplicaSet needs majority number of active mongod processes
+##
 ${MONGODB_HOME}/bin/mongo --port [port]
 
 
-# keywords related to ReplicaSet
-#   - priority
-#   - vote
-#   - arbiter
-#   - oplog
-
-
+##
+## keywords related to ReplicaSet
+##   - priority
+##   - vote
+##   - arbiter
+##   - oplog
+##
 

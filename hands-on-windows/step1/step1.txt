@@ -1,17 +1,25 @@
-# create data directory
+##
+## create data directory
+##
 mkdir .\data\mongod
 
 
-# start mongod
+##
+## start mongod
+##
 ..\setEnv.bat
 %MONGODB_HOME%\bin\mongod.exe --dbpath .\data\mongod --smallfiles
 
 
-# connect to mongod
+##
+## connect to mongod
+##
 ..\setEnv.bat
 %MONGODB_HOME%\bin\mongo.exe
 
-# run commands
+##
+## run commands
+##
 show dbs
 use step1
 show collections
@@ -29,11 +37,15 @@ db.user.find({userId: {$lte:10}})
 db.user.find({userId:{$gte:5, $lt:10}})
 
 
-# more query patterns
+##
+## more query patterns
+##
 http://www.mongodb.org/display/DOCS/Advanced+Queries
 
 
-# stop mongod (use one of the following 3 patterns)
+##
+## stop mongod (perform one of the following 2 patterns)
+##
 # 1. press "CTRL + C" if you are running mongod in foreground
 
 # 2. connect to mongod and run commands.
@@ -42,9 +54,11 @@ use admin
 db.shutdownServer()
 
 
-# keywords related to mongod basis
-#   - collection
-#   - document
-#   - index
-#   - MapReduce
-#   - journal
+##
+## keywords related to mongod basis
+##   - collection
+##   - document
+##   - index
+##   - MapReduce
+##   - journal
+##

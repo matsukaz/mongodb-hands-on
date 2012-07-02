@@ -1,16 +1,24 @@
-# create data directory
+##
+## create data directory
+##
 mkdir -p ./data/mongod
 
 
-# start mongod
+##
+## start mongod
+##
 ${MONGODB_HOME}/bin/mongod --dbpath ./data/mongod --smallfiles
 
 
-# connect to mongod
+##
+## connect to mongod
+##
 ${MONGODB_HOME}/bin/mongo
 
 
-# run commands
+##
+## run commands
+##
 show dbs
 use step1
 show collections
@@ -28,11 +36,15 @@ db.user.find({userId: {$lte:10}})
 db.user.find({userId:{$gte:5, $lt:10}})
 
 
-# more query patterns
+##
+## more query patterns
+##
 http://www.mongodb.org/display/DOCS/Advanced+Queries
 
 
-# stop mongod (use one of the following 3 patterns)
+##
+## stop mongod (perform one of the following 3 patterns)
+##
 # 1. press "CTRL + C" if you are running mongod in foreground
 
 # 2. kill mongod process
@@ -45,11 +57,13 @@ use admin
 db.shutdownServer()
 
 
-# keywords related to mongod basis
-#   - collection
-#   - document
-#   - index
-#   - MapReduce
-#   - journal
+##
+## keywords related to mongod basis
+##   - collection
+##   - document
+##   - index
+##   - MapReduce
+##   - journal
+##
 
 

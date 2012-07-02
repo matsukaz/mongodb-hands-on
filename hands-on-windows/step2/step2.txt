@@ -1,15 +1,21 @@
-# start 3 mongod processes
-mongod01a_start.bat	# port = 27101
-mongod01b_start.bat # port = 27102
-mongod01c_start.bat # port = 27103
+##
+## start 3 mongod processes
+##
+mongod01a_start.bat        # port = 27101
+mongod01b_start.bat        # port = 27102
+mongod01c_start.bat        # port = 27103
 
 
-# connect to mongod 01a
+##
+## connect to mongod 01a
+##
 ..\setEnv.bat
 %MONGODB_HOME%\bin\mongo.exe --port 27101
 
 
-# run following commands to initiate ReplicaSet
+##
+## run following commands to initiate ReplicaSet
+##
 config = {
     _id: 'r1', members: [
         {_id: 0, host: 'localhost:27101'},
@@ -21,8 +27,10 @@ rs.initiate(config)
 rs.status()
 
 
-# connect to mongod web console
-# url is "http://hostname:[mongod's port + 1000]"
+##
+## connect to mongod web console
+## url is "http://hostname:[mongod's port + 1000]"
+##
 # mongod 01a
 http://localhost:28101
 
@@ -33,7 +41,9 @@ http://localhost:28102
 http://localhost:28103
 
 
-# connect to PRIMARY mongod and insert data
+##
+## connect to PRIMARY mongod and insert data
+##
 ..\setEnv.bat
 %MONGODB_HOME%\bin\mongo.exe --port [port]
 use step2
@@ -41,57 +51,76 @@ db.user.save({name:"hoge"})
 db.user.find()
 
 
-# connect to SECONDARY mongod and find data
+##
+## connect to SECONDARY mongod and find data
+##
 %MONGODB_HOME%\bin\mongo.exe --port [port]
 use step2
 rs.slaveOk()    # need to run commands in SECONDARY mongod
 db.user.find()
 
 
-# connect to PRIMARY mongod and run the following commands to become SECONDARY mongod
+##
+## connect to PRIMARY mongod and run the following commands to become SECONDARY mongod
+##
 %MONGODB_HOME%\bin\mongo.exe --port [port]
 rs.stepDown()
 rs.status()
 
 
-# stop PRIMARY mongod
+##
+## stop PRIMARY mongod
+##
 CTRL-C
 
-# make sure that new PRIMARY mongod was elected
+##
+## make sure that new PRIMARY mongod was elected
+##
 %MONGODB_HOME%\bin\mongo.exe --port [port]
 rs.status()
 
 
-# insert some data
+##
+## insert some data
+##
 use step2
 db.user.save({name:"fuga"})
 db.user.find()
 
 
-# start mongod you have just stopped
-mongod01a_start.bat	# port = 27101
+##
+## start mongod you have just stopped
+##
+mongod01a_start.bat        # port = 27101
 
 
-# connect to mongod you have just started and make sure that all datas are replicated.
+##
+## connect to mongod you have just started and make sure that all datas are replicated.
+##
 %MONGODB_HOME%\bin\mongo.exe --port [port]
 use step2
 rs.slaveOk()
 db.user.find()
 
 
-# stop 2 mongod processes
+##
+## stop 2 mongod processes
+##
 CTRL-C
 
-# make sure that there are no PRIMARY mongod
-# ReplicaSet needs majority number of active mongod processes
+
+##
+## make sure that there are no PRIMARY mongod
+## ReplicaSet needs majority number of active mongod processes
+##
 %MONGODB_HOME%\bin\mongo.exe --port [port]
 
 
-# keywords related to ReplicaSet
-#   - priority
-#   - vote
-#   - arbiter
-#   - oplog
-
-
+##
+## keywords related to ReplicaSet
+##   - priority
+##   - vote
+##   - arbiter
+##   - oplog
+##
 
