@@ -55,8 +55,8 @@ db.user.find()
 ## connect to SECONDARY mongod and find data
 ##
 %MONGODB_HOME%\bin\mongo.exe --port [port]
-use step2
 rs.slaveOk()    # need to run commands in SECONDARY mongod
+use step2
 db.user.find()
 
 
@@ -98,8 +98,8 @@ mongod01a_start.bat        # port = 27101
 ## connect to mongod you have just started and make sure that all datas are replicated.
 ##
 %MONGODB_HOME%\bin\mongo.exe --port [port]
-use step2
 rs.slaveOk()
+use step2
 db.user.find()
 
 

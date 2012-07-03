@@ -53,8 +53,8 @@ db.user.find()
 ## connect to SECONDARY mongod and find data
 ##
 ${MONGODB_HOME}/bin/mongo --port [port]
-use step2
 rs.slaveOk()    # need to run commands in SECONDARY mongod
+use step2
 db.user.find()
 
 
@@ -83,6 +83,7 @@ rs.status()
 ##
 ## insert some data
 ##
+use step2
 db.user.save({name:"fuga"})
 db.user.find()
 
@@ -98,6 +99,7 @@ sh mongod_01a_start.sh
 ##
 ${MONGODB_HOME}/bin/mongo --port [port]
 rs.slaveOk()
+use step2
 db.user.find()
 
 
