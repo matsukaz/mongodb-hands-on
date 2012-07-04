@@ -16,5 +16,5 @@ fi
 # run mongod
 echo MONGODB_HOME=${MONGODB_HOME}
 
-${MONGODB_HOME}/bin/mongod --dbpath ./data/mongod01b --port 27102 --replSet r1 --oplogSize 10 --logpath ./data/mongod01b/mongod.log --logappend --fork --smallfiles
+${MONGODB_HOME}/bin/mongod --dbpath ./data/mongod01b --port 27102 --replSet r1 --oplogSize 10 --logpath ./data/mongod01b/mongod.log --logappend --fork --rest --smallfiles
 
