@@ -10,4 +10,4 @@ mkdir .\data\mongod01a
 rem run mongod
 echo MONGODB_HOME=%MONGODB_HOME%
 
-%MONGODB_HOME%\bin\mongod.exe --dbpath .\data\mongod01a --port 27101 --replSet r1 --logpath .\data\mongod01a\mongod.log --logappend --smallfiles --rest 
+%MONGODB_HOME%\bin\mongod.exe --dbpath .\data\mongod01a --port 27101 --replSet r1 --oplogSize 10 --logpath .\data\mongod01a\mongod.log --logappend --smallfiles --rest 
